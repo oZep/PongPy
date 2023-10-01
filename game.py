@@ -74,7 +74,7 @@ class Game:
         for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1), ('spawners', 2)]):
             if spawner['variant'] == 0: 
                 self.player.pos = spawner['pos']
-            elif spawner['variant'] == 1:
+            #elif spawner['variant'] == 1:
                 self.player2.pos = spawner['pos']
             else:
                 self.moveable.append(Moveable(self, spawner['pos'], (16,16)))
@@ -93,9 +93,8 @@ class Game:
             self.screenshake = max(0, self.screenshake-1) # resets screenshake value
 
             # move 'camera' to focus on player, make him the center of the screen
-            # scroll = current scroll + (where we want the camera to be - what we have/can see currently) 
-            self.scroll[0] += (self.player.rect().centerx - self.display_2.get_width()/2 - self.scroll[0])  / 30  # x axis
-            self.scroll[1] += (self.player.rect().centery - self.display_2.get_height()/2 - self.scroll[1]) / 30
+            self.scroll[0] += (- self.scroll[0])  / 30  # x axis
+            self.scroll[1] += (- self.scroll[1]) / 30
 
             # fix the jitter
             render_scroll = (int(self.scroll[0]), int(self.scroll[1]))

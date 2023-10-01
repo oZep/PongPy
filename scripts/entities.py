@@ -115,14 +115,16 @@ class Player(PhysicsEntity):
         '''
         super().update(tilemap, movement=movement)
 
-        if movement[0] != 0: # if moving horizontally
-            self.set_action('run')
-        elif movement[1] > 0:
-            self.set_action('runDOWN')
-        elif movement[1] < 0:
-            self.set_action('runUP')
-        else:
-            self.set_action('idle')
+
+        # Use this for particle effects
+        #if movement[0] != 0: # if moving horizontally
+        #    self.set_action('run')
+        #elif movement[1] > 0:
+        #    self.set_action('runDOWN')
+        #elif movement[1] < 0:
+        #    self.set_action('runUP')
+        #else:
+        self.set_action('idle')
 
         if abs(self.velocity[0]) < 0.1: # stops small sliding across screen after dash
             self.velocity[0] = 0
