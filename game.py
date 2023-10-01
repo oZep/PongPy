@@ -42,10 +42,10 @@ class Game:
         }
 
         # initalizing player
-        self.player = Player(self, (self.display_white.get_width()/2, self.display_white.get_height()/2), (16, 16))
+        self.player = Player(self, (self.display_white.get_width()/2, self.display_white.get_height()/2), (5, 20))
 
         # get player 2 by connecting to server
-        self.player2 = Player(self, (self.display_white.get_width()/2, self.display_white.get_height()/2), (16, 16))
+        self.player2 = Player(self, (self.display_white.get_width()/2, self.display_white.get_height()/2), (5, 20))
 
         # initalizing tilemap
         self.tilemap = Tilemap(self, tile_size=16)
@@ -111,13 +111,13 @@ class Game:
             # for testing
             pygame.draw.rect(self.display_white, (0, 255, 0), (self.player.pos[0] - render_scroll[0], self.player.pos[1] - render_scroll[1], self.player.size[0], self.player.size[1]), 2)
             
-            for crate in self.moveable.copy():
-                crate.update(self.tilemap, (0,0))
-                crate.render(self.display_2, offset=render_scroll)
+            for puck in self.moveable.copy():
+                puck.update(self.tilemap, (0,0))
+                puck.render(self.display_white, offset=render_scroll)
 
             # white ouline based on display_white
             display_mask = pygame.mask.from_surface(self.display_white)
-            display_sillhouette = display_mask.to_surface(setcolor=(225, 225, 225, 180), unsetcolor=(0, 0, 0, 0)) # 180 opaque, 0 transparent
+            display_sillhouette = display_mask.to_surface(setcolor=(255, 255, 255, 180), unsetcolor=(0, 0, 0, 0)) # 180 opaque, 0 transparent
             self.display_2.blit(display_sillhouette, (0, 0))
             for offset in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
                 self.display_2.blit(display_sillhouette, offset) # putting what we drew onframe back into display
