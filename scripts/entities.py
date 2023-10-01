@@ -151,7 +151,7 @@ class Player2(PhysicsEntity):
         return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
 
 
-class (PhysicsEntity):
+class Moveable(PhysicsEntity):
     def __init__(self, game, pos, size):
         '''
         instantiates plauer entity
