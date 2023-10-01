@@ -144,7 +144,7 @@ class Player2(PhysicsEntity):
         instantiates plauer entity
         (game, position, size)
         '''
-        super().__init__(game, 'player1', pos, size)
+        super().__init__(game, 'player2', pos, size)
 
     def rect(self):
         '''

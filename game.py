@@ -5,7 +5,7 @@ import random
 import pygame
 
 from scripts.utils import load_image, load_images, Animation
-from scripts.entities import Player, Moveable
+from scripts.entities import Player, Moveable, Player2
 from scripts.tilemap import Tilemap
 from scripts.particle import Particle
 from scripts.spark import Spark
@@ -19,7 +19,7 @@ class Game:
         pygame.init()
 
         # change the window caption
-        pygame.display.set_caption("Go Bananas")
+        pygame.display.set_caption("PongPy")
         # create window
         self.screen = pygame.display.set_mode((640, 480)) # (640, 480), (960, 720), (768, 576)
 
@@ -45,7 +45,7 @@ class Game:
         self.player = Player(self, (self.display_white.get_width()/2, self.display_white.get_height()/2), (5, 20))
 
         # get player 2 by connecting to server
-        self.player2 = Player(self, (self.display_white.get_width()/2, self.display_white.get_height()/2), (5, 20))
+        self.player2 = Player2(self, (self.display_white.get_width()/2, self.display_white.get_height()/2), (5, 20))
 
         # initalizing tilemap
         self.tilemap = Tilemap(self, tile_size=16)
@@ -74,7 +74,7 @@ class Game:
         for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1), ('spawners', 2)]):
             if spawner['variant'] == 0: 
                 self.player.pos = spawner['pos']
-            #elif spawner['variant'] == 1:
+            elif spawner['variant'] == 1:
                 self.player2.pos = spawner['pos']
             else:
                 self.moveable.append(Moveable(self, spawner['pos'], (16,16)))
@@ -105,7 +105,7 @@ class Game:
             self.player.render(self.display_white, offset=render_scroll)
 
             # get movement from server
-            self.player2.update(self.tilemap, (self.movement[1] - self.movement[0], self.movement[3] - self.movement[2]))
+            self.player2.update(self.tilemap, (0,0))
             self.player2.render(self.display_white, offset=render_scroll)
 
             # for testing

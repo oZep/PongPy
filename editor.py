@@ -25,8 +25,6 @@ class Editor:
         self.assets = {
             'spawners': load_images('tiles/spawners')
         }
-        
-        self.movement = [False, False, False, False] # camera movement in all 4 directions
 
         #initalizing tilemap
         self.tilemap = Tilemap(self, tile_size=16)
@@ -58,8 +56,8 @@ class Editor:
             # clear the screen for new image generation in loop
             self.display.fill((255,255,255))
 
-            self.scroll[0] += (self.movement[1] - self.movement[0]) * 2 # camera x axis
-            self.scroll[1] += (self.movement[3] - self.movement[2]) * 2 # camera y axis
+            self.scroll[0] = 0 # camera x axis
+            self.scroll[1] = 0 # camera y axis
             render_scroll = (int(self.scroll[0]), int(self.scroll[1]))
 
             # render the tile map
