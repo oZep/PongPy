@@ -23,11 +23,13 @@ class MainMenu():
 
         self.assets = {
             'MainMenu': load_image('MainMenu.png'),
+            'Icon': load_image('icon.png'),
         }
     
     def enter(self):
         while (not self.connection):
             self.display.blit(self.assets['MainMenu'], (0,0)) # no outline
+            self.display.blit(self.assets['Icon'], (self.display.get_width() // 3, 0)) # no outline
             for event in pygame.event.get():
                 if event.type == pygame.QUIT: # have to code the window closing
                     pygame.quit()
@@ -88,11 +90,11 @@ class MainMenu():
                             self.port += '.'
                         if self.host_select:
                             self.host += '.'
-                    if event.key == pygame.K_RETURN:
+                    if event.key == pygame.K_DELETE:
                         if self.port_select:
                             self.port = self.port[:len(self.port)-1] # delete a character
                         if self.host_select:
-                            self.host = self.port[:len(self.port)-1]
+                            self.host = self.host[:len(self.port)-1]
                     if event.key == pygame.K_a:
                         self.host_select = 0
                         self.port_select = 1
@@ -103,12 +105,18 @@ class MainMenu():
 
             if not self.start:
                 # display host
-                host_indicator = TextUI("Host:", pos=(200, self.display.get_height() // 2 - 20))
+                if self.host_select:
+                    host_indicator = TextUI("Host:", pos=(200, self.display.get_height() // 2 - 20), color=(255,0,0))
+                else:
+                    host_indicator = TextUI("Host:", pos=(200, self.display.get_height() // 2 - 20))
                 host_UI = TextUI(self.host, pos=(200, self.display.get_height() // 2))
                 host_indicator.render(self.display, 22)
                 host_UI.render(self.display, 22)
                 #display server
-                server_indicator = TextUI("Server:", pos=(40, self.display.get_height() // 2 - 20))
+                if self.port_select:
+                    server_indicator = TextUI("Server:", pos=(40, self.display.get_height() // 2 - 20), color=(255,0,0))
+                else:
+                    server_indicator = TextUI("Server:", pos=(40, self.display.get_height() // 2 - 20))
                 server_UI = TextUI(self.port, pos=(40, self.display.get_height() // 2))
                 server_indicator.render(self.display, 22)
                 server_UI.render(self.display, 22)
