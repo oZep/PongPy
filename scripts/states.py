@@ -20,6 +20,7 @@ class MainMenu():
         self.host = ''
         self.port_select = 0
         self.host_select = 0
+        self.start_select = 0
 
         self.assets = {
             'MainMenu': load_image('MainMenu.png'),
@@ -95,12 +96,25 @@ class MainMenu():
                             self.port = self.port[:len(self.port)-1] # delete a character
                         if self.host_select:
                             self.host = self.host[:len(self.port)-1]
+                    if event.key == pygame.K_RETURN:
+                        if self.port_select:
+                            self.port = self.port[:len(self.port)-1] # delete a character
+                        if self.host_select:
+                            self.host = self.host[:len(self.port)-1]
+                        if self.start_select == 1:
+                            self.start = 0
                     if event.key == pygame.K_a:
                         self.host_select = 0
                         self.port_select = 1
+                        self.start_select = 0
                     if event.key == pygame.K_d:
                         self.host_select = 1
                         self.port_select = 0
+                        self.start_select = 0
+                    if event.key == pygame.K_s:
+                        self.host_select = 0
+                        self.port_select = 0
+                        self.start_select = 1
 
 
             if not self.start:
@@ -112,17 +126,30 @@ class MainMenu():
                 host_UI = TextUI(self.host, pos=(200, self.display.get_height() // 2))
                 host_indicator.render(self.display, 22)
                 host_UI.render(self.display, 22)
+
                 #display server
                 if self.port_select:
-                    server_indicator = TextUI("Server:", pos=(40, self.display.get_height() // 2 - 20), color=(255,0,0))
+                    server_indicator = TextUI("Server:", pos=(50, self.display.get_height() // 2 - 20), color=(255,0,0))
                 else:
-                    server_indicator = TextUI("Server:", pos=(40, self.display.get_height() // 2 - 20))
+                    server_indicator = TextUI("Server:", pos=(50, self.display.get_height() // 2 - 20))
+                
                 server_UI = TextUI(self.port, pos=(40, self.display.get_height() // 2))
                 server_indicator.render(self.display, 22)
                 server_UI.render(self.display, 22)
+                
+                # display start
+                if self.start_select:
+                    start_UI = TextUI("Start!", pos=(self.display.get_width() // 3 + 35, 200), color=(255,0,0))
+                else:
+                    start_UI = TextUI("Start", pos=(self.display.get_width() // 3 + 35, 200))
+                start_UI.render(self.display, 22)
+
+                
 
             if self.start:
                 pass # connect to the client
+
+            
             self.game.screen.blit(pygame.transform.scale(self.display, self.game.screen.get_size()), (0,0)) # render (now scaled) display image on big screen
             pygame.display.update()
             self.game.clock.tick(60) # run at 60 fps, like a sleep

@@ -32,7 +32,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.escaped = 0
         
-        self.movement = [False, False, False, False]
+        self.movement = [False, False, False, False] 
 
         self.assets = {
             'player': load_image('entities/player/player.png'),
