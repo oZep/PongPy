@@ -10,6 +10,7 @@ from scripts.tilemap import Tilemap
 from scripts.particle import Particle
 from scripts.spark import Spark
 from scripts.UI import Heart, Levelbar
+from scripts.states import MainMenu
 
 class Game:
     def __init__(self):
@@ -46,6 +47,8 @@ class Game:
 
         # get player 2 by connecting to server
         self.player2 = Player2(self, (self.display_white.get_width()/2, self.display_white.get_height()/2), (5, 20))
+
+        self.menu = MainMenu(self, self.display_2)
 
         # initalizing tilemap
         self.tilemap = Tilemap(self, tile_size=16)
@@ -86,6 +89,10 @@ class Game:
 
         # creating an infinite game loop
         while True:
+
+            self.menu.enter()
+
+
             self.display_white.fill((255, 255, 255, 0))    # black outlines
             # clear the screen for new image generation in loopd
             self.display_2.blit(self.assets['background'], (0,0)) # no outline
@@ -137,7 +144,7 @@ class Game:
                     if event.key == pygame.K_s:
                         self.movement[3] = True
                     if event.key == pygame.K_ESCAPE:
-                        pass # menu
+                        self.menu.enter()
                 if event.type == pygame.KEYUP: # when key is released
                     if event.key == pygame.K_a: 
                         self.movement[0] = False
