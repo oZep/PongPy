@@ -9,7 +9,7 @@ from scripts.entities import Player, Moveable, Player2
 from scripts.tilemap import Tilemap
 from scripts.particle import Particle
 from scripts.spark import Spark
-from scripts.UI import Heart, Levelbar
+from scripts.UI import Heart
 from scripts.states import MainMenu
 
 class Game:

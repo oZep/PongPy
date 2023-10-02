@@ -29,14 +29,15 @@ class Heart:
         '''
         surf.blit(self.img, self.pos)
 
-class Levelbar:
-    def __init__(self, level, pos=[0,0]):
+class TextUI:
+    def __init__(self, text, pos=[0,0], color=(0,0,0)):
         '''
         initializing the level counter
-        (current level, position=[x,y])
+        (current level, position=[x,y], color)
         '''
-        self.level = level
+        self.text = text
         self.pos = pos
+        self.color = color
     
 
     def render(self, surf, fontsize):
@@ -45,5 +46,5 @@ class Levelbar:
         (surface, font size)
         '''
         self.fontsize = fontsize
-        current_level = pygame.font.SysFont('Superstar', fontsize).render(f"Level {self.level}", False, (255,255, 0))
+        current_level = pygame.font.SysFont('Superstar', fontsize).render(f"{self.text}", False, self.color)
         surf.blit(current_level, self.pos)
