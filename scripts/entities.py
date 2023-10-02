@@ -18,6 +18,7 @@ class PhysicsEntity:
         self.size = size
         self.velocity = [0,0]
         self.collisions = {'up': False, 'down': False, 'left': False, 'right': False}
+        self.speed = 1.5
 
         self.action = ''
         self.anim_offset = (-3, -3) #renders with an offset to pad the animation against the hitbox
@@ -52,7 +53,7 @@ class PhysicsEntity:
 
         frame_movement = (movement[0] + self.velocity[0], movement[1] + self.velocity[1])
         
-        self.pos[0] += frame_movement[0]
+        self.pos[0] += frame_movement[0] * self.speed
         entity_rect = self.rect() # getting the entities rectange
         # move tile based on collision on y axis
         for rect in tilemap.physics_rects_around(self.pos):
@@ -66,7 +67,7 @@ class PhysicsEntity:
                 self.pos[0] = entity_rect.x
         
         # Note: Y-axis collision handling comes after X-axis handling
-        self.pos[1] += frame_movement[1]
+        self.pos[1] += frame_movement[1] * self.speed
         entity_rect = self.rect()  # Update entity rectangle for y-axis handling
         # move tile based on collision on y axis
         for rect in tilemap.physics_rects_around(self.pos):
@@ -152,18 +153,17 @@ class Moveable(PhysicsEntity):
         if self.rect().colliderect(self.game.player.rect()):
             self.velocity = [0,0]
             if self.game.player.last_movement[0] == 0 or self.game.player.last_movement[1] == 0:
-                self.velocity = [0,5]
+                self.velocity = [2,1]
             else:
-                self.velocity[0] = abs(self.game.player.last_movement[0]) / (self.game.player.last_movement[0]) * 5
-                self.velocity[1] = abs(self.game.player.last_movement[1]) / (self.game.player.last_movement[1]) * 5
+                self.velocity[0] = abs(self.game.player.last_movement[0]) / (self.game.player.last_movement[0]) * 2
+                self.velocity[1] = abs(self.game.player.last_movement[1]) / (self.game.player.last_movement[1]) * 2
         elif self.rect().colliderect(self.game.player2.rect()): # if enemy hitbox collides with player
             self.velocity = [0,0]
-            #if self.game.player2.last_movement[0] == 0 or self.game.player2.last_movement[1] == 0:
-            self.velocity[0]  = -8
-            self.velocity[1] = 0
-            #else:
-            #    self.velocity[0] = abs(self.game.player2.movement[0]) / (self.game.player2.last_movement[0]) * 5
-            #    self.velocity[1] = abs(self.game.player2.last_movement[1]) / (self.game.player2.last_movement[1]) * 5
+            if self.game.player2.last_movement[0] == 0 or self.game.player2.last_movement[1] == 0:
+                self.velocity = [-2,-1]
+            else:
+                self.velocity[0] = abs(self.game.player2.last_movement[0]) / (self.game.player2.last_movement[0]) * 2
+                self.velocity[1] = abs(self.game.player2.last_movement[1]) / (self.game.player2.last_movement[1]) * 2
         
         if self.pos[1] < 0:
             self.velocity[1] = -self.velocity[1]
@@ -177,11 +177,11 @@ class Moveable(PhysicsEntity):
 
 
         if self.velocity[0] > 0:
-            self.velocity[0] = max(self.velocity[0] - 0.05, 0) # right falling to left
+            self.velocity[0] = max(self.velocity[0] - 0.005, 0) # right falling to left
         else:
-            self.velocity[0] = min(self.velocity[0] + 0.05, 0) # left falling to to right
+            self.velocity[0] = min(self.velocity[0] + 0.005, 0) # left falling to to right
         
         if self.velocity[1] > 0:
-            self.velocity[1] = max(self.velocity[0] - 0.05, 0) # right falling to left
+            self.velocity[1] = max(self.velocity[1] - 0.005, 0) # right falling to left
         else:
-            self.velocity[1] = min(self.velocity[0] + 0.05, 0) # left falling to to right
+            self.velocity[1] = min(self.velocity[1] + 0.005, 0) # left falling to to right

@@ -87,7 +87,7 @@ class Game:
         # creating an infinite game loop
         while True:
             self.display_white.fill((255, 255, 255, 0))    # black outlines
-            # clear the screen for new image generation in loop
+            # clear the screen for new image generation in loopd
             self.display_2.blit(self.assets['background'], (0,0)) # no outline
 
             self.screenshake = max(0, self.screenshake-1) # resets screenshake value
