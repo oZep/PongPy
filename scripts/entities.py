@@ -107,36 +107,25 @@ class Player(PhysicsEntity):
         (game, position, size)
         '''
         super().__init__(game,'player', pos, size)
-        self.banana = 2
+        self.set_action('idle')
 
     def update(self, tilemap, movement=(0,0)):
         '''
-        updates players animations depending on movement
+        updates frames and entitiy position 
         '''
-        super().update(tilemap, movement=movement)
+        super().update(tilemap, movement)
 
+        # player boundary
+        if self.pos[1] > 220: 
+            self.pos[1] = 220 # screen height - 20
+        if self.pos[1] < 0:
+            self.pos[1] = 0
+        
+        if self.pos[0] < 0:
+            self.pos[0] = 0
+        if self.pos[0] > 155: # half screen width - 5
+            self.pos[1] = 155
 
-        # Use this for particle effects
-        #if movement[0] != 0: # if moving horizontally
-        #    self.set_action('run')
-        #elif movement[1] > 0:
-        #    self.set_action('runDOWN')
-        #elif movement[1] < 0:
-        #    self.set_action('runUP')
-        #else:
-        self.set_action('idle')
-
-        if abs(self.velocity[0]) < 0.1: # stops small sliding across screen after dash
-            self.velocity[0] = 0
-        if abs(self.velocity[1]) < 0.1:
-            self.velocity[1] = 0
-
-
-    def render(self, surf, offset={0,0}):
-        '''
-        partly overriding rendering for dashing
-        '''
-        super().render(surf, offset=offset) # show player
 
 class Player2(PhysicsEntity):
     def __init__(self, game, pos, size):
@@ -145,12 +134,7 @@ class Player2(PhysicsEntity):
         (game, position, size)
         '''
         super().__init__(game, 'player2', pos, size)
-
-    def rect(self):
-        '''
-        creates a rectangle at the entitiies current postion
-        '''
-        return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
+        self.set_action('idle')
 
 
 class Moveable(PhysicsEntity):
@@ -162,25 +146,42 @@ class Moveable(PhysicsEntity):
         super().__init__(game, 'moveable', pos, size)
         self.timer = 0
 
-    def rect(self):
-        '''
-        creates a rectangle at the entitiies current postion
-        '''
-        return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
 
     def update(self, tilemap, movement=(0,0)):
-        if self.rect().colliderect(self.game.player.rect()) and not self.timer: # if enemy hitbox collides with player
-            if tilemap.solid_check((self.rect().centerx + (-7 if self.flip else 7), self.pos[1] + 10)):
-                if self.game.player.movement[0] > 0 and not self.collisions['left']:
-                    self.pos = (self.game.player.pos[0]+16, self.game.player.pos[1])
-                elif self.game.player.movement[0] < 0 and not self.collisions['right']:
-                    self.pos = (self.game.player.pos[0]-16, self.game.player.pos[1])
-                elif self.game.player.movement[1] > 0 and not self.collisions['up']:
-                    self.pos = (self.game.player.pos[0], self.game.player.pos[1] + 16)
-                elif self.game.player.movement[1] < 0 and not self.collisions['down']:
-                    self.pos = (self.game.player.pos[0], self.game.player.pos[1]- 16)
-                self.timer = 100
-                self.game.player.banana = max(0, self.game.player.banana -1)
+        super().update(tilemap, movement)
+        if self.rect().colliderect(self.game.player.rect()):
+            self.velocity = [0,0]
+            if self.game.player.last_movement[0] == 0 or self.game.player.last_movement[1] == 0:
+                self.velocity = [0,5]
+            else:
+                self.velocity[0] = abs(self.game.player.last_movement[0]) / (self.game.player.last_movement[0]) * 5
+                self.velocity[1] = abs(self.game.player.last_movement[1]) / (self.game.player.last_movement[1]) * 5
+        elif self.rect().colliderect(self.game.player2.rect()): # if enemy hitbox collides with player
+            self.velocity = [0,0]
+            #if self.game.player2.last_movement[0] == 0 or self.game.player2.last_movement[1] == 0:
+            self.velocity[0]  = -8
+            self.velocity[1] = 0
+            #else:
+            #    self.velocity[0] = abs(self.game.player2.movement[0]) / (self.game.player2.last_movement[0]) * 5
+            #    self.velocity[1] = abs(self.game.player2.last_movement[1]) / (self.game.player2.last_movement[1]) * 5
+        
+        if self.pos[1] < 0:
+            self.velocity[1] = -self.velocity[1]
+        if self.pos[1] > 230: # half screen width - 5
+            self.velocity[1] = -self.velocity[1]
 
-        if self.timer > 0:
-            self.timer -= 1
+        if self.pos[0] < 0:
+            self.velocity[0] = -self.velocity[0]
+        if self.pos[0] > 310: # half screen width - 5
+            self.velocity[0] = -self.velocity[0]
+
+
+        if self.velocity[0] > 0:
+            self.velocity[0] = max(self.velocity[0] - 0.05, 0) # right falling to left
+        else:
+            self.velocity[0] = min(self.velocity[0] + 0.05, 0) # left falling to to right
+        
+        if self.velocity[1] > 0:
+            self.velocity[1] = max(self.velocity[0] - 0.05, 0) # right falling to left
+        else:
+            self.velocity[1] = min(self.velocity[0] + 0.05, 0) # left falling to to right

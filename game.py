@@ -77,7 +77,7 @@ class Game:
             elif spawner['variant'] == 1:
                 self.player2.pos = spawner['pos']
             else:
-                self.moveable.append(Moveable(self, spawner['pos'], (16,16)))
+                self.moveable.append(Moveable(self, spawner['pos'], (5,5)))
 
     def run(self):
         '''
