@@ -129,9 +129,9 @@ class MainMenu():
 
                 #display server
                 if self.port_select:
-                    server_indicator = TextUI("Server:", pos=(50, self.display.get_height() // 2 - 20), color=(255,0,0))
+                    server_indicator = TextUI("Port:", pos=(50, self.display.get_height() // 2 - 20), color=(255,0,0))
                 else:
-                    server_indicator = TextUI("Server:", pos=(50, self.display.get_height() // 2 - 20))
+                    server_indicator = TextUI("Port:", pos=(50, self.display.get_height() // 2 - 20))
                 
                 server_UI = TextUI(self.port, pos=(50, self.display.get_height() // 2))
                 server_indicator.render(self.display, 22)
@@ -147,7 +147,7 @@ class MainMenu():
                 
 
             if self.start:
-                pass # connect to the client
+                pass # use port and host to connect to the client
 
 
             self.game.screen.blit(pygame.transform.scale(self.display, self.game.screen.get_size()), (0,0)) # render (now scaled) display image on big screen
