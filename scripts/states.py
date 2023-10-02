@@ -133,7 +133,7 @@ class MainMenu():
                 else:
                     server_indicator = TextUI("Server:", pos=(50, self.display.get_height() // 2 - 20))
                 
-                server_UI = TextUI(self.port, pos=(40, self.display.get_height() // 2))
+                server_UI = TextUI(self.port, pos=(50, self.display.get_height() // 2))
                 server_indicator.render(self.display, 22)
                 server_UI.render(self.display, 22)
                 
@@ -149,7 +149,7 @@ class MainMenu():
             if self.start:
                 pass # connect to the client
 
-            
+
             self.game.screen.blit(pygame.transform.scale(self.display, self.game.screen.get_size()), (0,0)) # render (now scaled) display image on big screen
             pygame.display.update()
             self.game.clock.tick(60) # run at 60 fps, like a sleep
