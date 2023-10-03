@@ -4,13 +4,16 @@ from scripts.entities import Player
 
 class Client:
 
-    def __init__(self):
+    def __init__(self, port=65474, host='127.0.0.1'):
         '''
         intializes client
+        (int port, str(host))
         '''
+        self.host = host
+        self.port = port
         #alias = input('Choose yo >>> ')
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client.connect(('127.0.0.1', 65474))
+        self.client.connect((self.host, self.port))
         # make threads for receiving and sending
         self.receive_thread = threading.Thread(target=self.client_recieve)
         self.receive_thread.start()
@@ -26,9 +29,9 @@ class Client:
                 message = self.client.recv(1024).decode('utf-8')
                 if message == 'alias?':
                     pass
-                    #client.send(alias.encode('utf-8'))
+                    # client.send(alias.encode('utf-8'))
                 else:
-                    # print(message) # print the message that is sent from the server
+                    print(message) # print the message that is sent from the server
                     self.game.player2.pos = message['pos']
                     self.game.player2.hp = message['health']
             except:

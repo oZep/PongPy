@@ -46,5 +46,5 @@ class TextUI:
         (surface, font size)
         '''
         self.fontsize = fontsize
-        current_level = pygame.font.SysFont('Superstar', fontsize).render(f"{self.text}", False, self.color)
+        current_level = pygame.font.SysFont('Return of Ganon', fontsize).render(f"{self.text}", False, self.color)
         surf.blit(current_level, self.pos)

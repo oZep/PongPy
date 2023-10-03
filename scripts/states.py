@@ -2,6 +2,7 @@ import pygame
 import sys
 from .utils import load_image
 from .UI import TextUI
+from client import Client
 
 class MainMenu():
     def __init__(self, game, display):
@@ -96,13 +97,15 @@ class MainMenu():
                             self.port = self.port[:len(self.port)-1] # delete a character
                         if self.host_select:
                             self.host = self.host[:len(self.port)-1]
+                        if self.start_select == 1:
+                            self.start = 1
                     if event.key == pygame.K_RETURN:
                         if self.port_select:
                             self.port = self.port[:len(self.port)-1] # delete a character
                         if self.host_select:
                             self.host = self.host[:len(self.port)-1]
                         if self.start_select == 1:
-                            self.start = 0
+                            self.start = 1
                     if event.key == pygame.K_a:
                         self.host_select = 0
                         self.port_select = 1
@@ -145,10 +148,23 @@ class MainMenu():
                 start_UI.render(self.display, 22)
 
                 
-
             if self.start:
-                pass # use port and host to connect to the client
+                if not len(self.port):
+                    timer = 500
+                    error = TextUI("ERROR NO PORT NUMBER", pos=(self.display.get_width() // 4, 200), color=(255,0,0))
+                    error.render(self.display, 22)
+                    while (timer > 0):
+                        timer -= 0.00005
+                    self.start = 0
+                else:
+                    self.client = Client()
+                    # use port and host to connect to the client
+                    #self.server = Server(self.port, self.host)
+                    #self.server.recieve()
+                    #self.client = Client(self.server)
 
+                    print('Connection Established')
+                    return
 
             self.game.screen.blit(pygame.transform.scale(self.display, self.game.screen.get_size()), (0,0)) # render (now scaled) display image on big screen
             pygame.display.update()
