@@ -44,6 +44,9 @@ class Client:
         send messages to the server
         '''
         while True:
+            if message == 'Connected':
+                return
             message = f"{'playerSprite' : {self.game.player.select}; 'pos': {self.game.player.pos}; 'health': {self.game.player.hp};}"
             self.client.send(message.encode('utf-8'))
+            pass
 
