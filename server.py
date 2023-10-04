@@ -48,14 +48,10 @@ def recieve():
         client, address = server.accept()
 
         print(f'Connection is established with {str(address)}') # cannot concatenate therefore f strings
-        client.send('alias?'.encode('utf-8'))
-        alias = client.recv(1024)
+        connected = client.recv(1024)
 
         # append alias and client to the list
-        aliases.append(alias)
         clients.append(client)
-        print(f'The alias of this client is {alias}'.encode('utf-8'))
-        broadcast(f'{alias} has joined the chatroom'.encode('utf-8'))
         client.send('you are connected!'.encode('utf-8'))
                     
 

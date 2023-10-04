@@ -19,6 +19,7 @@ class Client:
         self.receive_thread.start()
         self.send_thread = threading.Thread(target=self.client_send)
         self.send_thread.start()
+        self.connected = 0
 
     def client_recieve(self):
         '''
@@ -27,9 +28,8 @@ class Client:
         while True:
             try:
                 message = self.client.recv(1024).decode('utf-8')
-                if message == 'alias?':
-                    pass
-                    # client.send(alias.encode('utf-8'))
+                if message == 'Connected':
+                    self.connected = 1
                 else:
                     print(message) # print the message that is sent from the server
                     self.game.player2.pos = message['pos']
@@ -39,7 +39,7 @@ class Client:
                 self.client.close()
                 break
 
-    def client_send(self, game):
+    def client_send(self, message=''):
         '''
         send messages to the server
         '''

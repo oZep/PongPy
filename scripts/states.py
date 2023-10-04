@@ -22,6 +22,7 @@ class MainMenu():
         self.port_select = 0
         self.host_select = 0
         self.start_select = 0
+        self.start_client = 1
 
         self.assets = {
             'MainMenu': load_image('MainMenu.png'),
@@ -157,14 +158,21 @@ class MainMenu():
                         timer -= 0.00005
                     self.start = 0
                 else:
-                    self.client = Client()
+                    if self.start_client:
+                        self.client = Client()
+                        self.client.client_send("Connected")
+                        self.start_client = 0
+                        print('Connection Established')
                     # use port and host to connect to the client
                     #self.server = Server(self.port, self.host)
                     #self.server.recieve()
                     #self.client = Client(self.server)
+                    if not self.client.connected:
+                        error = TextUI("Waiting on Player 2", pos=(self.display.get_width() // 4, 200), color=(255,0,0))
+                        error.render(self.display, 22)
+                    else:
+                        pass
 
-                    print('Connection Established')
-                    return
 
             self.game.screen.blit(pygame.transform.scale(self.display, self.game.screen.get_size()), (0,0)) # render (now scaled) display image on big screen
             pygame.display.update()
