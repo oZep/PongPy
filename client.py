@@ -4,7 +4,7 @@ from scripts.entities import Player
 
 class Client:
 
-    def __init__(self, port=65474, host='127.0.0.1'):
+    def __init__(self, port=51313, host='127.0.0.1'):
         '''
         intializes client
         (int port, str(host))
@@ -30,10 +30,15 @@ class Client:
                 message = self.client.recv(1024).decode('utf-8')
                 if message == 'Connected':
                     self.connected = 1
-                else:
-                    print(message) # print the message that is sent from the server
-                    self.game.player2.pos = message['pos']
-                    self.game.player2.hp = message['health']
+                #else:
+                #    print(message) # print the message that is sent from the server
+                #    self.game.player2.pos = message['pos']
+                #    self.game.player2.hp = message['health']
+                if self.connected:
+                    print(message)
+                    # send game data 
+
+                print(message)
             except:
                 print("Error")
                 self.client.close()
@@ -44,9 +49,9 @@ class Client:
         send messages to the server
         '''
         while True:
-            if message == 'Connected':
-                return
-            message = f"{'playerSprite' : {self.game.player.select}; 'pos': {self.game.player.pos}; 'health': {self.game.player.hp};}"
-            self.client.send(message.encode('utf-8'))
+            #if message == 'Connected': # need the server to only broadcast messages to everyone except for the sender
+            #    self.client.send(message.encode('utf-8'))
+            #message = f"{'playerSprite' : {self.game.player.select}; 'pos': {self.game.player.pos}; 'health': {self.game.player.hp};}"
+            #self.client.send(message.encode('utf-8'))
             pass
 

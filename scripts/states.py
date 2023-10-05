@@ -160,7 +160,6 @@ class MainMenu():
                 else:
                     if self.start_client:
                         self.client = Client()
-                        self.client.client_send("Connected")
                         self.start_client = 0
                         print('Connection Established')
                     # use port and host to connect to the client
@@ -171,7 +170,7 @@ class MainMenu():
                         error = TextUI("Waiting on Player 2", pos=(self.display.get_width() // 4, 200), color=(255,0,0))
                         error.render(self.display, 22)
                     else:
-                        pass
+                        return
 
 
             self.game.screen.blit(pygame.transform.scale(self.display, self.game.screen.get_size()), (0,0)) # render (now scaled) display image on big screen

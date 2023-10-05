@@ -2,7 +2,7 @@ import threading
 import socket
 
 HOST = '127.0.0.1' # local host
-PORT = 65474
+PORT = 51313
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((HOST, PORT))
 
@@ -31,9 +31,6 @@ def handle_client(client):
             index = clients.index(client) # searches tuple and returns index
             clients.remove(client)
             client.close()
-            alias = aliases[index]
-            broadcast(f'{alias} has left the chatroom'.encode('utf-8')) # endcode to convert to bytes
-            aliases.remove(alias)
             print("Server has stopped")
             break
 
@@ -48,11 +45,13 @@ def recieve():
         client, address = server.accept()
 
         print(f'Connection is established with {str(address)}') # cannot concatenate therefore f strings
-        connected = client.recv(1024)
 
         # append alias and client to the list
         clients.append(client)
-        client.send('you are connected!'.encode('utf-8'))
+
+        if len(clients) == 2:
+            broadcast('Connected'.encode('utf-8'))
+            print('sent')
                     
 
         # create and start the thread
