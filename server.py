@@ -50,8 +50,8 @@ def recieve():
         clients.append(client)
 
         if len(clients) == 2:
-            broadcast('Connected'.encode('utf-8'))
             print('sent')
+            broadcast('Connected'.encode('utf-8'))
                     
 
         # create and start the thread

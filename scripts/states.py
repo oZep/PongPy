@@ -169,8 +169,8 @@ class MainMenu():
                     if not self.client.connected:
                         error = TextUI("Waiting on Player 2", pos=(self.display.get_width() // 4, 200), color=(255,0,0))
                         error.render(self.display, 22)
-                    else:
-                        return
+                    if self.client.connected:
+                        return # back to the game
 
 
             self.game.screen.blit(pygame.transform.scale(self.display, self.game.screen.get_size()), (0,0)) # render (now scaled) display image on big screen
